@@ -1,0 +1,19 @@
+{
+  "name": "pennlets",
+  "version": "1.0.0",
+  "description": "When you're ready, start your application by running: `docker compose up --build`.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imlamont/pennlets.git"
+  },
+  "author": "The Daily Pennsylvanian Innovation Lab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/imlamont/pennlets/issues"
+  },
+  "homepage": "https://github.com/imlamont/pennlets#readme"
+}
