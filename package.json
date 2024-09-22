@@ -10,8 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/imlamont/pennlets.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "The Daily Pennsylvanian Innovation Lab",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/imlamont/pennlets/issues"
