@@ -1,8 +1,8 @@
 {
   "name": "pennlets",
   "version": "1.0.0",
-  "description": "When you're ready, start your application by running: `docker compose up --build`.",
-  "main": "main.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/imlamont/pennlets/issues"
   },
-  "homepage": "https://github.com/imlamont/pennlets#readme"
+  "homepage": "https://github.com/imlamont/pennlets#readme",
+  "dependencies": {
+    "express": "^4.21.0",
+    "nodemon": "^3.1.7"
+  }
 }
