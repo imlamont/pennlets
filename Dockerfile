@@ -30,7 +30,7 @@ USER node
 COPY . .
 
 # Expose the port that the application listens on.
-EXPOSE 3030
+EXPOSE 3000
 
 # Run the application.
-CMD ["node", "main.js"]
+CMD ["node", "index.js"]
