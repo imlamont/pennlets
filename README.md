@@ -11,9 +11,3 @@ Deploy with: `git push heroku master`
 View logs with: `heroku logs --tail`
 
 Open app with: `heroku open`
-
-## Backend
-
-Install Express with: `npm install express`
-
-Create a new file called `server.js` and add the following code:
