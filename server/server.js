@@ -1,7 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+const { createClient } = require('@supabase/supabase-js');
 
 // Allows for communication from front and backend
 const corsOptions = {
@@ -12,17 +11,21 @@ const corsOptions = {
 
 const app = express();
 const port = 3001;
-dotenv.config();
+require('dotenv').config();
 
 app.use(cors(corsOptions));
 
-// Initialize Supabase client
+// Initialize the Database (Supabase)
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+    throw new Error('SUPABASE_URL and SUPABASE_KEY must be defined in .env');
+}
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 
-// Sample route to get data from a table
+// Test db connection
 app.get('/data', async (req, res) => {
     const { data, error } = await supabase
         .from('test')
@@ -35,6 +38,8 @@ app.get('/data', async (req, res) => {
 
     res.json(data);
 });
+
+
 
 // Test route to ensure connection
 app.get('/api/test', (req, res) => {
