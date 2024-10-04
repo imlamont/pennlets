@@ -50,10 +50,10 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // });
 
 
-// Testing authentication
-app.get('/', (req, res) => {
-    res.send(' <a href="auth/google"> Authenticate with google</a>');
-});
+// // Testing authentication
+// app.get('/', (req, res) => {
+//     res.send(' <a href="auth/google"> Authenticate with google</a>');
+// });
 
 app.get(
     '/auth/google',
