@@ -1,39 +1,31 @@
 const express = require('express');
 const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
 const session = require('express-session');
-const passport = require('passport');
 
+const auth_router = require("./routes/auth")
+const data_router = require("./routes/data")
 
-require('./middleware/passport');
 require('dotenv').config();
 
 // Allows for communication from front and backend
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://127.0.0.1:4173/',
     methods: "*",
     allowedHeaders: "*",
 };
 
-const port = 3001;
+const port = process.env.SERVER_PORT;
 
 const app = express();
 app.use(cors(corsOptions));
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(express.json());
 
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Initialize the Database (Supabase)
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-    throw new Error('SUPABASE_URL and SUPABASE_KEY must be defined in .env');
-}
-const supabase = createClient(supabaseUrl, supabaseKey);
-
+app.use("/data", data_router);
+app.use("/auth", auth_router);
 
 // Test db connection
 // app.get('/data', async (req, res) => {
@@ -55,30 +47,17 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 //     res.send(' <a href="auth/google"> Authenticate with google</a>');
 // });
 
-app.get(
-    '/auth/google',
-    passport.authenticate('google', {
-        scope: ['profile', 'email'],
-        prompt: 'select_account',
-    })
-)
-
-app.get(
-    '/auth/google/redirect',
-    passport.authenticate('google', {
-        failureRedirect: '/'
-    }),
-    function (req, res) {
-        res.send('success')
-    }
-);
-
 
 // Test route to ensure connection
 app.get('/api/test', (req, res) => {
     res.json({
         message: "test route from express"
     });
+});
+
+
+app.get('/', (req, res) => {
+    res.redirect("/auth")
 });
 
 app.listen(port, () => {
