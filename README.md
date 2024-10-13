@@ -11,3 +11,10 @@ Deploy with: `git push heroku master`
 View logs with: `heroku logs --tail`
 
 Open app with: `heroku open`
+
+
+
+
+Run the backend with
+npm run dev
+
