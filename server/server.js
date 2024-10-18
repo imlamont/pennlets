@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 
-const auth_router = require("./routes/auth")
-const data_router = require("./routes/data")
+const passport = require("./middleware/passport");
+
+const auth_router = require("./routes/auth");
+const data_router = require("./routes/data");
 
 require('dotenv').config();
 
@@ -58,6 +60,10 @@ app.get('/api/test', (req, res) => {
 
 app.get('/', (req, res) => {
     res.redirect("/auth")
+});
+
+app.get('/error', (req, res) => {
+    
 });
 
 app.listen(port, () => {

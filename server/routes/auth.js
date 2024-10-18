@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require('passport');
 
-require('./middleware/passport');
+require('../middleware/passport');
 require('dotenv').config();
 
 const router = express.Router();
@@ -30,9 +30,11 @@ router.get(
         res.redirect("/")
     });
 
+// route for frontend authentication
 router.get(
     '/',
     (req,res)=>{
+        
     });
 
-module.exports = router
+module.exports = router;

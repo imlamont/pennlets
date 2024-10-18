@@ -19,11 +19,34 @@ passport.use(
             callbackURL: `http://localhost:3001/auth/google/redirect`
         },
         // verify function
-        function (accessToken, refreshToken, profile, done) {
+        async function (accessToken, refreshToken, profile, done) {
             const email = profile.emails[0].value;
-            const id = profile.id;
 
-            return done(null, profile);
+            const {data: usr, error: err} = await db.from("users")
+                                                    .select("*")
+                                                    .eq('email', email);
+            
+            // return with error
+            if (err) {
+                return done(err);
+            }
+
+            // create new user if one doesnt exist
+            if (!usr) {
+                const newUsr = {
+                    username: profile.displayName,
+                    email: email,
+                };
+
+                let {error: err} = await db.from("users")
+                                           .insert([newUsr]);
+
+                if (err) return done(err);
+
+                return done(null, newUsr);
+            } else {
+                return done(null, usr);
+            }
         }
     )
 );
@@ -35,3 +58,5 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
+
+module.exports = passport;
