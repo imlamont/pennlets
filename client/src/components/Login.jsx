@@ -7,16 +7,32 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-10 max-w-sm w-full">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">Welcome Back!</h1>
-        <p className="text-gray-600 mb-6 text-center">Please login to your account</p>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#f3f4f6' }}>
+      <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', maxWidth: '400px', width: '100%', backgroundColor: '#ffffff' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px', textAlign: 'center' }}>Welcome Back!</h1>
+        <p style={{ color: '#4b5563', marginBottom: '24px', textAlign: 'center' }}>Please login to your account</p>
         <button
           onClick={handleOAuthLogin}
-          className="w-full flex items-center justify-center bg-blue-600 text-white font-semibold py-3 px-4 rounded hover:bg-blue-700 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#3b82f6',
+            color: '#ffffff',
+            fontWeight: '600',
+            padding: '12px 16px',
+            borderRadius: '4px',
+            width: '100%',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s ease-in-out',
+            border: 'none',
+            outline: 'none'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
         >
           <svg
-            className="w-5 h-5 mr-3"
+            style={{ width: '20px', height: '20px', marginRight: '8px' }}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 48 48"
             fill="currentColor"

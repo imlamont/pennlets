@@ -6,7 +6,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/auth" element={<Login />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
