@@ -21,14 +21,15 @@ function App() {
         <Route path="/home" element={<HomePage />} />
 
         {/* Protected Route */}
-        <Route
+        {/* <Route
           path="/submit-request"
           element={
             <ProtectedRoute>
               <OwnerRequestForm />
             </ProtectedRoute>
           }
-        />
+        /> */}
+        <Route path="/submit-request" element={<OwnerRequestForm />} />
       </Routes>
     </Router>
   );

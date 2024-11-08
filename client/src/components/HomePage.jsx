@@ -1,13 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate to redirect after sign out
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Initialize navigate function
+  const [userId, setUserId] = useState(null); // State to store userId
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    if (token) {
+      localStorage.setItem('authToken', token);
+      // Optionally, you can remove the token from the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
+  // Function to verify the token and fetch user data
+  const fetchUserId = async (token) => {
+    try {
+      const response = await fetch('http://localhost:3001/auth/getUserId', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch user ID');
+      }
+      const data = await response.json();
+      console.log('User ID:', data.userId);
+      setUserId(data.userId);
+    } catch (error) {
+      console.error('Error fetching user ID:', error);
+      setError('Failed to authenticate user.');
+      navigate('/'); // Redirect to login if authentication fails
+    }
+  };
+
+  // Fetch rooms and userId when the component loads
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      navigate('/'); // Redirect to login if no token found
+      return;
+    }
+
+    // Fetch User ID from JWT token
+    fetchUserId(token);
+
+    // Fetch rooms from the backend
     const fetchRooms = async () => {
       try {
         const response = await fetch('http://localhost:3001/api/rooms');
@@ -24,12 +68,17 @@ const HomePage = () => {
     };
 
     fetchRooms();
-  }, []);
+  }, [navigate]);
 
   // Function to handle sign-out
   const handleSignOut = () => {
-    localStorage.removeItem('authToken');  // Remove the auth token from localStorage
-    navigate('/');  // Redirect to the login page
+    localStorage.removeItem('authToken'); // Remove the auth token from localStorage
+    navigate('/'); // Redirect to the login page
+  };
+
+  // Function to navigate to the Submit Request route
+  const handleSubmitRequest = () => {
+    navigate(`/submit-request?userId=${userId}`); // Redirect to the Submit Request page with userId
   };
 
   return (
@@ -50,6 +99,24 @@ const HomePage = () => {
         }}
       >
         Sign Out
+      </button>
+
+      {/* Submit Request Button */}
+      <button
+        onClick={handleSubmitRequest}
+        style={{
+          padding: '0.5rem 1rem',
+          backgroundColor: '#4CAF50',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          fontSize: '1rem',
+          cursor: 'pointer',
+          marginBottom: '1rem',
+        }}
+        disabled={!userId} // Disable button until userId is fetched
+      >
+        Submit Request
       </button>
 
       <h1 style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center' }}>Available Rooms</h1>

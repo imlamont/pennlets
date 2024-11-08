@@ -7,6 +7,7 @@ const passport = require("./middleware/passport");
 const auth_router = require("./routes/auth");
 const rooms_router = require('./routes/rooms');
 const requests_router = require('./routes/requests');
+const users_router = require('./routes/users');
 
 require('dotenv').config();
 
@@ -32,6 +33,7 @@ app.use(passport.session());
 app.use("/auth", auth_router);
 app.use("/api/rooms", rooms_router);
 app.use("/api/requests", requests_router);
+app.use("/api/users", users_router);
 
 
 // Initialize the Database (Supabase)
