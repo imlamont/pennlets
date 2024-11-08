@@ -11,16 +11,18 @@ const requests_router = require('./routes/requests');
 require('dotenv').config();
 
 // Allows for communication from front and backend
-const corsOptions = {
-    origin: 'http://127.0.0.1:4173/',
-    methods: "*",
-    allowedHeaders: "*",
-};
+// const corsOptions = {
+//     origin: 'http://127.0.0.1:5173/',
+//     methods: "*",
+//     allowedHeaders: "*",
+// };
+
 
 const port = process.env.SERVER_PORT;
 
 const app = express();
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors({ origin: '*' }));
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(express.json());
 
