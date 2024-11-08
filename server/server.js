@@ -16,7 +16,8 @@ const corsOptions = {
     allowedHeaders: "*",
 };
 
-const port = process.env.SERVER_PORT;
+const back_port = process.env.SERVER_PORT;
+const front_port = process.env.CLIENT_PORT;
 
 const app = express();
 app.use(cors(corsOptions));
@@ -29,27 +30,6 @@ app.use(passport.session());
 app.use("/data", data_router);
 app.use("/auth", auth_router);
 
-// Test db connection
-// app.get('/data', async (req, res) => {
-//     const { data, error } = await supabase
-//         .from('test')
-//         .select('*');
-
-//     if (error) {
-//         console.error(error);
-//         return res.status(500).send('Error fetching data');
-//     }
-
-//     res.json(data);
-// });
-
-
-// // Testing authentication
-// app.get('/', (req, res) => {
-//     res.send(' <a href="auth/google"> Authenticate with google</a>');
-// });
-
-
 // Test route to ensure connection
 app.get('/api/test', (req, res) => {
     res.json({
@@ -59,13 +39,13 @@ app.get('/api/test', (req, res) => {
 
 
 app.get('/', (req, res) => {
-    res.redirect("/auth")
+    res.redirect(`http://localhost:${front_port}`)
 });
 
 app.get('/error', (req, res) => {
     
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(back_port, () => {
+    console.log(`Server is running on http://localhost:${back_port}`);
 });

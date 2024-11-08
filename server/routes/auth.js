@@ -19,7 +19,7 @@ router.get(
     passport.authenticate('google', {
         failureRedirect: '/failure?strategy=google'
     }), (req, res) =>{
-        res.redirect('/home')
+        res.redirect('/')
     }
 );
 
