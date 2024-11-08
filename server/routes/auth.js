@@ -42,7 +42,7 @@ router.get('/', (req,res)=>{});
 
 
 // route to get the user id from a jwt token
-router.get('/api/getUserId', (req, res) => {
+router.get('/getUserId', (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 

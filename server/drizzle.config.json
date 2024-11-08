@@ -1,0 +1,13 @@
+{
+    "schema": "/Users/matthewkuo/Desktop/pennlets/server/models/schema.js",
+    "out": "./migrations",
+    "db": {
+        "client": "postgres",
+        "connection": {
+            "host": "db.supabase.co",
+            "user": "your-db-username",
+            "password": "your-db-password",
+            "database": "your-database-name"
+        }
+    }
+}

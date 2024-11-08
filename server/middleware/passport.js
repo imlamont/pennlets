@@ -15,58 +15,6 @@ const jwtSecret = "secret";
 
 console.log("jwt secret", jwtSecret);
 
-
-// passport.use(
-//     new GoogleStrategy(
-//         {
-//             clientID: googleClientId,
-//             clientSecret: googleClientSecret,
-//             callbackURL: `http://localhost:3001/auth/google/redirect`,
-//         },
-//         async function (accessToken, refreshToken, profile, done) {
-//             try {
-//                 const email = profile.emails[0].value;
-//                 const username = profile.displayName;
-//                 const phone_number = null; // Google OAuth generally doesn't provide phone number
-
-//                 // Check if the user already exists in Supabase
-//                 const { data: existingUser, error: selectError } = await db
-//                     .from('users')
-//                     .select('*')
-//                     .eq('email', email)
-//                     .single(); // Single ensures we get one record or null
-
-//                 if (selectError && selectError.code !== 'PGRST116') {
-//                     return done(selectError);
-//                 }
-
-//                 // If user doesn't exist, insert them into the 'users' table
-//                 let newUser = existingUser;
-//                 if (!existingUser) {
-//                     const { data: insertedUser, error: insertError } = await db
-//                         .from('users')
-//                         .insert({
-//                             username,
-//                             email,
-//                             phone_number,
-//                         })
-//                         .select()
-//                         .single(); // Fetch the inserted record
-
-//                     if (insertError) {
-//                         return done(insertError);
-//                     }
-//                     newUser = insertedUser;
-//                 }
-
-//                 return done(null, newUser); // Pass the user to serializeUser
-//             } catch (error) {
-//                 return done(error);
-//             }
-//         }
-//     )
-// );
-
 passport.use(
     new GoogleStrategy(
         {

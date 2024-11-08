@@ -78,7 +78,7 @@ const HomePage = () => {
 
   // Function to navigate to the Submit Request route
   const handleSubmitRequest = () => {
-    navigate(`/submit-request?userId=${userId}`); // Redirect to the Submit Request page with userId
+    navigate(`/submit-request`); // Redirect to the Submit Request page with userId
   };
 
   return (
