@@ -13,7 +13,7 @@ const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 // const jwtSecret = process.env.JWT_SECRET;
 const jwtSecret = "secret";
 
-console.log("jwt secret", jwtSecret);
+//console.log("jwt secret", jwtSecret);
 
 passport.use(
     new GoogleStrategy(

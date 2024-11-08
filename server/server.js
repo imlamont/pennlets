@@ -11,15 +11,7 @@ const users_router = require('./routes/users');
 
 require('dotenv').config();
 
-// Allows for communication from front and backend
-// const corsOptions = {
-//     origin: 'http://127.0.0.1:5173/',
-//     methods: "*",
-//     allowedHeaders: "*",
-// };
-
-
-const port = process.env.SERVER_PORT;
+const server_port = process.env.SERVER_PORT;
 
 const app = express();
 // app.use(cors(corsOptions));
@@ -35,16 +27,16 @@ app.use("/api/rooms", rooms_router);
 app.use("/api/requests", requests_router);
 app.use("/api/users", users_router);
 
-
 // Initialize the Database (Supabase)
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
+
+const client_port = process.env.CLIENT_PORT;
 
 if (!supabaseUrl || !supabaseKey) {
     throw new Error('SUPABASE_URL and SUPABASE_KEY must be defined in .env');
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 
 // Test db connection
 app.get('/data', async (req, res) => {
@@ -60,14 +52,6 @@ app.get('/data', async (req, res) => {
     res.json(data);
 });
 
-
-// // Testing authentication
-// app.get('/', (req, res) => {
-//     res.send(' <a href="auth/google"> Authenticate with google</a>');
-// });
-
-
-
 // Test route to ensure connection
 app.get('/api/test', (req, res) => {
     res.json({
@@ -75,11 +59,10 @@ app.get('/api/test', (req, res) => {
     });
 });
 
-
 app.get('/', (req, res) => {
-    res.redirect("/auth")
+    res.redirect(`http://localhost:${client_port}/`)
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(server_port, () => {
+    console.log(`Server is running on http://localhost:${server_port}`);
 });

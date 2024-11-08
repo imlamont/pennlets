@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken');
 
 const jwtSecret = 'secret';
 
+const client_port = process.env.CLIENT_PORT;
+
 router.get(
     '/google',
     passport.authenticate('google', {
@@ -25,7 +27,7 @@ router.get('/google/redirect', passport.authenticate('google', {
     // res.redirect('http://localhost:5173/home');
     console.log("reidirecting after succcesfful login")
     console.log("token:", token)
-    res.redirect(`http://localhost:5173/home?token=${token}`);
+    res.redirect(`http://localhost:${client_port}/home?token=${token}`);
 });
 
 
