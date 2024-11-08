@@ -4,6 +4,8 @@ import Login from './components/Login';
 import OwnerRequestForm from './components/OwnerRequestForm';
 import HomePage from './components/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
+import RoomDetailsPage from './components/RoomDetailsPage';
+import MapComponent from './components/MapComponent';
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           }
         /> */}
         <Route path="/submit-request" element={<OwnerRequestForm />} />
+        <Route path="/room-details/:roomId" element={<RoomDetailsPage />} />
+
       </Routes>
     </Router>
   );

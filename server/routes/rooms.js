@@ -70,4 +70,30 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching the rooms.' });
     }
 });
+
+// Endpoint to get a specific room by ID
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Get the room with the specified ID from the database
+        const { data, error } = await db
+            .from('rooms')
+            .select('*')
+            .eq('id', id);
+
+        // Handle error if any occurs
+        if (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'An error occurred while fetching the room.' });
+        }
+
+        // Return the fetched room
+        res.status(200).json({ room: data[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while fetching the room.' });
+    }
+});
+
 module.exports = router;
