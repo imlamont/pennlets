@@ -14,14 +14,14 @@ router.get(
     })
 )
 
-router.get(
-    '/google/redirect',
-    passport.authenticate('google', {
-        failureRedirect: '/failure?strategy=google'
-    }), (req, res) =>{
-        res.redirect('/home')
-    }
-);
+router.get('/google/redirect', passport.authenticate('google', {
+    failureRedirect: '/',
+}), (req, res) => {
+    // After successful login, redirect to the frontend home page
+    console.log("redirecting to home");
+    res.redirect('http://localhost:5173/home');
+});
+
 
 router.get(
     '/failure',
@@ -34,7 +34,7 @@ router.get(
 router.get(
     '/',
     (req,res)=>{
-        
+
     });
 
 module.exports = router;
