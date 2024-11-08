@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const db = require("./database");
@@ -9,54 +10,86 @@ dotenv.config({ path: path.resolve(__dirname, '../config/.env') });
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+// const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = "secret";
+
+console.log("jwt secret", jwtSecret);
 
 passport.use(
     new GoogleStrategy(
-        // passed to google
         {
             clientID: googleClientId,
             clientSecret: googleClientSecret,
-            callbackURL: `http://localhost:3001/auth/google/redirect`
+            callbackURL: `http://localhost:3001/auth/google/redirect`,
         },
-        // verify function
         async function (accessToken, refreshToken, profile, done) {
-            const email = profile.emails[0].value;
+            try {
+                const email = profile.emails[0].value;
+                const username = profile.displayName;
+                const phone_number = null;
 
-            const {data: usr, error: err} = await db.from("users")
-                                                    .select("*")
-                                                    .eq('email', email);
-            
-            // return with error
-            if (err) {
-                return done(err);
-            }
+                const { data: existingUser, error: selectError } = await db
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
 
-            // create new user if one doesnt exist
-            if (!usr) {
-                const newUsr = {
-                    username: profile.displayName,
-                    email: email,
-                };
+                if (selectError && selectError.code !== 'PGRST116') {
+                    return done(selectError);
+                }
 
-                let {error: err} = await db.from("users")
-                                           .insert([newUsr]);
+                let newUser = existingUser;
+                if (!existingUser) {
+                    const { data: insertedUser, error: insertError } = await db
+                        .from('users')
+                        .insert({
+                            username,
+                            email,
+                            phone_number,
+                        })
+                        .select()
+                        .single();
 
-                if (err) return done(err);
+                    if (insertError) {
+                        return done(insertError);
+                    }
+                    newUser = insertedUser;
+                }
 
-                return done(null, newUsr);
-            } else {
-                return done(null, usr);
+                // Create a JWT token
+                const token = jwt.sign({ userId: newUser.id }, jwtSecret, { expiresIn: '1h' });
+
+                // Pass the user and token to serializeUser
+                return done(null, { user: newUser, token });
+            } catch (error) {
+                return done(error);
             }
         }
     )
 );
 
-passport.serializeUser((user, done) => {
-    done(null, user);
+
+// Serialize user into session
+passport.serializeUser((result, done) => {
+    // Access user from the result object
+    done(null, result.user.id);
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+// Deserialize user from session
+passport.deserializeUser(async (id, done) => {
+    try {
+        const { data: user, error } = await db
+            .from('users')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) return done(error);
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
 });
+
 
 module.exports = passport;
