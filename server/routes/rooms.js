@@ -3,6 +3,31 @@ const db = require('../middleware/database');
 
 const router = express.Router();
 
+
+// Function to fetch latitude and longitude from address
+const fetchCoordinates = async (address) => {
+    const apiKey = 'YOUR_GEOCODING_API_KEY';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.status === 'OK') {
+            const location = data.results[0].geometry.location;
+            return { latitude: location.lat, longitude: location.lng };
+        } else {
+            throw new Error('Failed to fetch coordinates');
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Geocoding API Error');
+    }
+};
+
+
+
+
 // Endpoint to create a new room
 router.post('/create', async (req, res) => {
     const {

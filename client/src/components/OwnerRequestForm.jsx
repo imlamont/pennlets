@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,11 +11,14 @@ const RoomForm = () => {
     start_date: '',
     end_date: '',
     number_of_roommates: '',
-    owner_id: '', // Will be set based on the logged-in user
+    street: '',
+    city: '',
+    state: '',
+    zip_code: '',
+    owner_id: '',
   });
   const [error, setError] = useState('');
 
-  // Function to fetch the user ID using token
   const fetchUserId = async (token) => {
     try {
       const response = await fetch('http://localhost:3001/auth/getUserId', {
@@ -28,9 +30,6 @@ const RoomForm = () => {
         throw new Error('Failed to fetch user ID');
       }
       const data = await response.json();
-      console.log('User ID:', data.userId);
-
-      // Update the formData state with owner ID
       setFormData((prevFormData) => ({
         ...prevFormData,
         owner_id: data.userId,
@@ -38,19 +37,16 @@ const RoomForm = () => {
     } catch (error) {
       console.error('Error fetching user ID:', error);
       setError('Failed to authenticate user.');
-      navigate('/'); // Redirect to login if authentication fails
+      navigate('/');
     }
   };
 
-  // Fetch user ID and set form data when component loads
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) {
-      navigate('/'); // Redirect to login if no token found
+      navigate('/');
       return;
     }
-
-    // Fetch the user ID using the token
     fetchUserId(token);
   }, [navigate]);
 
@@ -64,7 +60,6 @@ const RoomForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       const response = await fetch('http://localhost:3001/api/rooms/create', {
         method: 'POST',
@@ -83,6 +78,10 @@ const RoomForm = () => {
         start_date: '',
         end_date: '',
         number_of_roommates: '',
+        street: '',
+        city: '',
+        state: '',
+        zip_code: '',
         owner_id: '',
       });
       navigate('/home');
@@ -97,21 +96,21 @@ const RoomForm = () => {
       onSubmit={handleSubmit}
       style={{
         maxWidth: '600px',
-        margin: '0 auto',
+        margin: '2rem auto',
         padding: '2rem',
-        background: '#fff',
-        borderRadius: '8px',
-        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+        background: '#f7f9fc',
+        borderRadius: '12px',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
         display: 'grid',
-        gap: '1rem',
+        gap: '1.5rem',
       }}
     >
       <h2
         style={{
           textAlign: 'center',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
           color: '#333',
-          fontSize: '1.5rem',
+          fontSize: '1.8rem',
         }}
       >
         Post a Room
@@ -125,13 +124,74 @@ const RoomForm = () => {
         onChange={handleChange}
         required
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
         }}
       />
+
+      <h3
+        style={{
+          fontSize: '1.2rem',
+          color: '#555',
+          marginBottom: '0.5rem',
+        }}
+      >
+        Street Address
+      </h3>
+      <input
+        type="text"
+        name="street"
+        placeholder="Street"
+        value={formData.street}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
+        }}
+      />
+      <input
+        type="text"
+        name="city"
+        placeholder="City"
+        value={formData.city}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
+        }}
+      />
+      <input
+        type="text"
+        name="state"
+        placeholder="State"
+        value={formData.state}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
+        }}
+      />
+      <input
+        type="text"
+        name="zip_code"
+        placeholder="Zip Code"
+        value={formData.zip_code}
+        onChange={handleChange}
+        required
+        style={{
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
+        }}
+      />
+
       <input
         type="number"
         name="cost_per_month"
@@ -140,28 +200,26 @@ const RoomForm = () => {
         onChange={handleChange}
         required
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
         }}
       />
+
       <textarea
         name="description"
         placeholder="Description"
         value={formData.description}
         onChange={handleChange}
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
           resize: 'vertical',
-          minHeight: '100px',
+          height: '120px',
         }}
       />
+
       <input
         type="date"
         name="start_date"
@@ -169,13 +227,12 @@ const RoomForm = () => {
         onChange={handleChange}
         required
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
         }}
       />
+
       <input
         type="date"
         name="end_date"
@@ -183,13 +240,12 @@ const RoomForm = () => {
         onChange={handleChange}
         required
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
         }}
       />
+
       <input
         type="number"
         name="number_of_roommates"
@@ -197,11 +253,9 @@ const RoomForm = () => {
         value={formData.number_of_roommates}
         onChange={handleChange}
         style={{
-          padding: '0.75rem',
-          fontSize: '1rem',
-          borderRadius: '8px',
-          border: '1px solid #ccc',
-          outline: 'none',
+          padding: '0.85rem',
+          borderRadius: '10px',
+          border: '1px solid #ddd',
         }}
       />
 
@@ -213,7 +267,7 @@ const RoomForm = () => {
           backgroundColor: '#007BFF',
           color: '#fff',
           border: 'none',
-          borderRadius: '8px',
+          borderRadius: '12px',
           cursor: 'pointer',
           transition: 'background-color 0.3s',
         }}
@@ -222,27 +276,7 @@ const RoomForm = () => {
       >
         Post Room
       </button>
-
-    <button
-      type="button"
-      onClick={() => navigate('/home')}
-      style={{
-        padding: '1rem',
-        fontSize: '1rem',
-        backgroundColor: '#6c757d',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: 'background-color 0.3s',
-      }}
-      onMouseOver={(e) => (e.target.style.backgroundColor = '#5a6268')}
-      onMouseOut={(e) => (e.target.style.backgroundColor = '#6c757d')}
-    >
-      Back to Home
-    </button>
     </form>
-
   );
 };
 
