@@ -21,6 +21,7 @@ function App() {
           }
         /> */}
         <Route path="/home" element={<HomePage />} />
+        <Route path="/map" element={<MapComponent />} />
 
         {/* Protected Route */}
         {/* <Route
