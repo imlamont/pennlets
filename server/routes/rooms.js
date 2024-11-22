@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Function to fetch latitude and longitude from address
 const fetchCoordinates = async (address) => {
-    const apiKey = 'YOUR_GEOCODING_API_KEY';
+    const apiKey = ''; // put the api key for mapgl here
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
 
     try {
